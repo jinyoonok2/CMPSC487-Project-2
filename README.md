@@ -56,7 +56,7 @@ Since the search function takes cares of case sensitive and blank space, user do
 
 ![Description of Image1](github_images/3.png)
 
-"smartphone" search successfully found Smartphone item
+"smart phone" search successfully found Smartphone item
 
 ![Description of Image1](github_images/4.png)
 
