@@ -11,8 +11,8 @@ _Code was built on Pycharm IDE for Python programming_
 First, navigate to the directory where you want to store the project in the terminal. Then, clone the project repository:
 
 ```
-git clone https://github.com/jinyoonok2/CMPSC487-Project-1.git
-cd CMPSC487-Project-1
+git clone https://github.com/jinyoonok2/CMPSC487-Project-2.git
+cd CMPSC487-Project-2
 ```
 
 or you can use github Desktop to alternate this process.
@@ -28,10 +28,11 @@ pip install -r requirements.txt
 With all dependencies installed, navigate to the project directory (if you haven't already) and run:
 
 ```
-python db_login_final.py
+python app.py
 ```
 
-This will launch the program.
+This will launch the program. and open the web browser. If the web browser did not open automatically,
+please go to the link: http://127.0.0.1:5000/ (local)
 
 ## Usage
 
