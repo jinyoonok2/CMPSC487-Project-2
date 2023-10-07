@@ -25,7 +25,7 @@ def index():
         sort_by = 'name'  # Default sorting parameter
 
     if query:
-        # Using a regex to perform a case-insensitive search
+        # using a regex to perform a case-insensitive search
         items = collection.find({"name": {"$regex": query, "$options": "i"}}).sort(sort_by)
     else:
         items = collection.find().sort(sort_by)
