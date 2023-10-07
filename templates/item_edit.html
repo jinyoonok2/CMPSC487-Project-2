@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input, textarea, button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+        }
+        label {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="{{ url_for('save_item') }}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ item.name if item else '' }}">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ item.description if item else '' }}</textarea>
+        <input type="hidden" name="item_id" value="{{ item._id if item else '' }}">
+        <input type="submit" value="Save">
+        <button type="button" onclick="location.href='/'">Cancel</button>
+    </form>
+</body>
+</html>

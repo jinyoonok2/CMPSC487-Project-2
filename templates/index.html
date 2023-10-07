@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item List</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin: 20px;
+            width: 100%;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .item img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .item-info {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: left;
+            height: 100px;
+            width: 33%; /* Set to 1/3 of page width */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 20px;
+            position: relative;
+        }
+        .buttons {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        h2, p {
+            margin: 0; /* Remove default margin from h2 and p elements */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="search-bar">
+        <form action="/" method="get">
+            <input type="text" placeholder="Search..." name="query">
+            <button type="submit">Search</button>
+        </form>
+        <button onclick="location.href='/create'">Create</button>
+    </div>
+
+    {% for item in items %}
+    <div class="item">
+        <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+        <div class="item-info">
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.description }}</p>
+            <div class="buttons">
+                <button onclick="location.href='/edit/{{ item._id }}'">Edit</button>
+                <button onclick="location.href='/delete/{{ item._id }}'">Delete</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Message when no items are found -->
+    {% if item_count == 0 %}
+        <p>Oops! No results found.</p>
+    {% endif %}
+
+</body>
+</html>
