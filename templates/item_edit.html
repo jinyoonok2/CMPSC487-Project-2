@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-    <form method="POST" action="{{ url_for('save_item') }}">
+    <form method="POST" action="{{ url_for('save_item') }}" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="{{ item.name if item else '' }}">
         <label for="description">Description:</label>
@@ -37,6 +37,21 @@
         <input type="hidden" name="item_id" value="{{ item._id if item else '' }}">
         <input type="submit" value="Save">
         <button type="button" onclick="location.href='/'">Cancel</button>
+        <!-- Below is for Image Upload -->
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" onchange="loadFile(event)">
+        <br>
+        <img id="output" width="200" />
+        <script>
+            var loadFile = function(event) {
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+            };
+        </script>
+        <!-- Until here -->
     </form>
 </body>
 </html>

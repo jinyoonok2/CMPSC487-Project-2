@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-from pymongo import MongoClient
+from pymongo import MongoClient, ReturnDocument
 from bson import ObjectId
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 # Connect to MongoDB
@@ -8,6 +10,10 @@ uri = "mongodb+srv://jinyoonok:jinyoon981023@cmpsc487-jinyoon.vuymlgv.mongodb.ne
 client = MongoClient(uri)
 db = client['CMPSC487-Project2']
 collection = db['itemsCollection']
+
+UPLOAD_FOLDER = 'static/images'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def index():
@@ -45,6 +51,9 @@ def create_item():
     return render_template('item_edit.html', item=None)
 
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/save', methods=['POST'])
 def save_item():
     item_id = request.form.get('item_id')
@@ -55,6 +64,32 @@ def save_item():
         collection.update_one({'_id': ObjectId(item_id)}, {"$set": {"name": name, "description": description}})
     else:  # Create new item
         collection.insert_one({"name": name, "description": description, "image": "your_image_path"})
+
+    # Image Upload From Here
+    try:
+        if 'image' in request.files:
+            file = request.files['image']
+            if file.filename == '':
+                print('No selected file')
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                print(f"Image saved at: {file_path}")
+
+                # Convert file path to use forward slashes
+                web_file_path = file_path.replace('\\', '/')
+
+                if item_id:
+                    # For updates
+                    collection.update_one({'_id': ObjectId(item_id)}, {"$set": {"image": web_file_path}})
+                else:
+                    # For new insertions
+                    result = collection.insert_one({"name": name, "description": description, "image": web_file_path})
+                    print(f"Inserted Document: {result.inserted_id}")
+
+    except Exception as e:
+        print(f"Error occurred: {e}")
 
     return redirect(url_for('index'))  # Redirect back to the index page after saving
 
