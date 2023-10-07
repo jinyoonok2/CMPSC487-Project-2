@@ -42,6 +42,7 @@
 <body>
     <form method="POST" action="{{ url_for('save_item') }}" enctype="multipart/form-data">
         <label for="name">Name:</label>
+<!--        item is from render_template item parameter in app.py-->
         <input type="text" id="name" name="name" value="{{ item.name if item else '' }}">
         <label for="description">Description:</label>
         <textarea id="description" name="description">{{ item.description if item else '' }}</textarea>
