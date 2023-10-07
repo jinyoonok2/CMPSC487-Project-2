@@ -32,56 +32,65 @@ python app.py
 ```
 
 This will launch the program. and open the web browser. If the web browser did not open automatically,
-please go to the link: http://127.0.0.1:5000/ (local)
+please go to the link: [http://127.0.0.1:5000/](http://127.0.0.1:5000/) (local)
 
 ## Usage
 
 ![Description of Image1](github_images/1.png)
 
-When you run the program, you will be asked for the userId to open the database browsing interface.
-only userId of the user that has "janitor" user type will be granted with access, otherwise it will be denied like picture above.
+the homepage(index) enlists the item information from the MongoDB.
+1) You can search the item with the search bar at the top
+2) You can create new items and save their information up on the DB & save the image automatiaclly on your cloned github repo(since there is no server and it is local application, images will be saved on the repository of your machine)
+3) You can edit or delete each item with the buttons at the rightside of each item panel.
+4) As required, items are sorted by their name when they are displayed.
 
-For the user documents you can find them in users.json file in this repository to see what user objects were added to the Mongo DB server. (You can also check accessLogs.json to check the accesslogs that were added to the database.)
+For the items uploaded on DB as initial seed data(such like camera and printer as you can see on the image), you can find them in itemsCollection.js file in this repository.
 
 ![Description of Image2](github_images/2.png)
 
-For now, you can use **"999999999"** for the userId to access the interface since it is the only userId that has userType of "janitor".
-
-when the GUI opens, its first interface will ask you the password. The correct password is **"jinyoon981023"**
+First we will check the search function of the program.
+User can search the wanted item by putting its name on the search bar then clicking the search button.
+Since the search function takes cares of case sensitive and blank space, user do not need to worry about the capitalized letter or blank space.
+(ex: smart phone also works for Smartphone)
+(ex: smart will work for both Smartphone and Smartwatch)
 
 ![Description of Image1](github_images/3.png)
 
-If the password is invallid, the access will be denied.
+"smartphone" search successfully found Smartphone item
 
 ![Description of Image1](github_images/4.png)
 
-After the login, you will see the database browsing interface. 
-It has Default Start Date, End date, Start time and End Time.
-The default was given to prevent various errors that cause when the program retrieve the information from Mongo DB.
-Start Time and End Time has default of the **current time**. (If current time is 20:00:00, it will be 20:00:00)
-Start Date has date **one week before the current date** according to the user's machine environment.
-End Date has date of the **current date**. (If the current date is 2023/09/02, it will be 2023/09/02)
+Now it is time to check create function.
+when user click create button, it will lead the user to item_edit page where user can input name, description and upload image for the new item. (I apologize for the language is changed on my web browser, but if you run it on your program, it will properly display the choose file button for the image upload section)
+
+If user click cancel button here, the information will not be saved and the user will be sent back to index page.
+
+Note:
+When new item is added, program deletes the existing image if the preliminary image has the same name with the new uploaded image and replace it with the new image. - this is done to free the image name allocation.
 
 ![Description of Image1](github_images/5.png)
 
-User also can give specific userId to browse the only accesslogs that has according userId from the input.
+If user finish input then save, the new item will be saved successfully like the above picture.
 
 ![Description of Image1](github_images/6.png)
 
-The date can also be passed as input.
-In the above picture, End date had been changed to 2023-08-26. and since there is no accesslogs that have date of 08/26 with userId 973997270, it does not print anything.
+Now it is time to check edit.
+In fact, edit function uses the same page with create function.
+However, edit page had already filled in the blank of name and description with the existing information of the item.
+User can change the existing information by inputting new name or description or uploading new image.
+The section where user did not make any change will remain the same.
+
+Note:
+When new image for the item is uploaded, program deletes the existing image if the preliminary image has the same name with the new uploaded image and replace it with the new image. - this is done to free the image name allocation.
 
 ![Description of Image1](github_images/7.png)
 
-This is an example of using date and time. browsed date 08/31 between time 00:08:45 and 19:08:45
-Now we can see results that exist in the corresponding time interval.
+As we can see, the "new item 1" we added now have the new name, new description, and new image we gave in the edit.
 
 ![Description of Image1](github_images/8.png)
 
-When user does not input anything, it will use default date/time and print every user between that time interval.
-
-![Description of Image1](github_images/9.png)
-
-The program prevent the user input end time prior to start time. This also works for date.
+Now I clicked the delete button, and the new item we added are now gone.
+Note:
+When item is deleted, program also delete the image of the item when there is not other item that refer to that image. - This is done as the garbage collector of the images of the deleted items.
 
 Thank you for reading.
